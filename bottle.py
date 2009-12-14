@@ -117,6 +117,10 @@ try:
 except ImportError: # pragma: no cover
     json_dumps = None
 
+try:
+    from functools import partial
+except ImportError: # pragma: no cover
+    partial = None
 
 
 
@@ -808,6 +812,14 @@ def route(url, **kargs):
     Decorator for request handler. Same as add_route(url, handler, **kargs).
     """
     return default_app().route(url, **kargs)
+
+if partial:
+    get = partial(route, method='GET')
+    head = partial(route, method='HEAD')
+    post = partial(route, method='POST')
+    put = partial(route, method='PUT')
+    delete = partial(route, method='DELETE')
+    route_all = partial(route, method='ALL')
 
 
 def default():
